@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zj.company.dao.CompanyDao">
+
+    <resultMap id="BaseResultMap" type="com.zj.company.entity.Company">
+        <!--@Table co_company-->
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="managerId" column="manager_id" jdbcType="VARCHAR"/>
+        <result property="version" column="version" jdbcType="VARCHAR"/>
+        <result property="renewalDate" column="renewal_date" jdbcType="TIMESTAMP"/>
+        <result property="expirationDate" column="expiration_date" jdbcType="TIMESTAMP"/>
+        <result property="companyArea" column="company_area" jdbcType="VARCHAR"/>
+        <result property="companyAddress" column="company_address" jdbcType="VARCHAR"/>
+        <result property="businessLicenseId" column="business_license_id" jdbcType="VARCHAR"/>
+        <result property="legalRepresentative" column="legal_representative" jdbcType="VARCHAR"/>
+        <result property="companyPhone" column="company_phone" jdbcType="VARCHAR"/>
+        <result property="mailbox" column="mailbox" jdbcType="VARCHAR"/>
+        <result property="companySize" column="company_size" jdbcType="VARCHAR"/>
+        <result property="industry" column="industry" jdbcType="VARCHAR"/>
+        <result property="remarks" column="remarks" jdbcType="VARCHAR"/>
+        <result property="auditState" column="audit_state" jdbcType="VARCHAR"/>
+        <result property="state" column="state" jdbcType="INTEGER"/>
+        <result property="balance" column="balance" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select id,
+               name,
+               manager_id,
+               version,
+               renewal_date,
+               expiration_date,
+               company_area,
+               company_address,
+
+               business_license_id,
+               legal_representative,
+               company_phone,
+               mailbox,
+               company_size,
+               industry,
+               remarks,
+               audit_state,
+
+               state,
+               balance,
+               create_time
+
+
+        from co_company
+        where = #{}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+        id,
+        name,
+        manager_id,
+        version,
+        renewal_date,
+        expiration_date,
+        company_area,
+        company_address,
+
+        business_license_id,
+        legal_representative,
+        company_phone,
+        mailbox,
+        company_size,
+        industry,
+        remarks,
+        audit_state,
+
+        state,
+        balance,
+        create_time
+
+
+        from co_company
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="managerId != null and managerId != ''">
+                and manager_id = #{managerId}
+            </if>
+            <if test="version != null and version != ''">
+                and version = #{version}
+            </if>
+            <if test="renewalDate != null">
+                and renewal_date = #{renewalDate}
+            </if>
+            <if test="expirationDate != null">
+                and expiration_date = #{expirationDate}
+            </if>
+            <if test="companyArea != null and companyArea != ''">
+                and company_area = #{companyArea}
+            </if>
+            <if test="companyAddress != null and companyAddress != ''">
+                and company_address = #{companyAddress}
+            </if>
+            <if test="businessLicenseId != null and businessLicenseId != ''">
+                and business_license_id = #{businessLicenseId}
+            </if>
+            <if test="legalRepresentative != null and legalRepresentative != ''">
+                and legal_representative = #{legalRepresentative}
+            </if>
+            <if test="companyPhone != null and companyPhone != ''">
+                and company_phone = #{companyPhone}
+            </if>
+            <if test="mailbox != null and mailbox != ''">
+                and mailbox = #{mailbox}
+            </if>
+            <if test="companySize != null and companySize != ''">
+                and company_size = #{companySize}
+            </if>
+            <if test="industry != null and industry != ''">
+                and industry = #{industry}
+            </if>
+            <if test="remarks != null and remarks != ''">
+                and remarks = #{remarks}
+            </if>
+            <if test="auditState != null and auditState != ''">
+                and audit_state = #{auditState}
+            </if>
+            <if test="state != null">
+                and state = #{state}
+            </if>
+            <if test="balance != null and balance != ''">
+                and balance = #{balance}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+    select
+    id,
+    name,
+    manager_id,
+    version,
+    renewal_date,
+    expiration_date,
+    company_area,
+    company_address,
+
+    business_license_id,
+    legal_representative,
+    company_phone,
+    mailbox,
+    company_size,
+    industry,
+    remarks,
+    audit_state,
+
+    state,
+    balance,
+    create_time
+
+
+    from ihrm.co_company
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from co_company
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="managerId != null and managerId != ''">
+                and manager_id = #{managerId}
+            </if>
+            <if test="version != null and version != ''">
+                and version = #{version}
+            </if>
+            <if test="renewalDate != null">
+                and renewal_date = #{renewalDate}
+            </if>
+            <if test="expirationDate != null">
+                and expiration_date = #{expirationDate}
+            </if>
+            <if test="companyArea != null and companyArea != ''">
+                and company_area = #{companyArea}
+            </if>
+            <if test="companyAddress != null and companyAddress != ''">
+                and company_address = #{companyAddress}
+            </if>
+            <if test="businessLicenseId != null and businessLicenseId != ''">
+                and business_license_id = #{businessLicenseId}
+            </if>
+            <if test="legalRepresentative != null and legalRepresentative != ''">
+                and legal_representative = #{legalRepresentative}
+            </if>
+            <if test="companyPhone != null and companyPhone != ''">
+                and company_phone = #{companyPhone}
+            </if>
+            <if test="mailbox != null and mailbox != ''">
+                and mailbox = #{mailbox}
+            </if>
+            <if test="companySize != null and companySize != ''">
+                and company_size = #{companySize}
+            </if>
+            <if test="industry != null and industry != ''">
+                and industry = #{industry}
+            </if>
+            <if test="remarks != null and remarks != ''">
+                and remarks = #{remarks}
+            </if>
+            <if test="auditState != null and auditState != ''">
+                and audit_state = #{auditState}
+            </if>
+            <if test="state != null">
+                and state = #{state}
+            </if>
+            <if test="balance != null and balance != ''">
+                and balance = #{balance}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+        </where>
+    </select>
+    <select id="getComapnyById" resultType="com.zj.company.entity.Company"></select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="" useGeneratedKeys="true">
+        insert into co_company(idnamemanager_idversionrenewal_dateexpiration_datecompany_areacompany_addressbusiness_license_idlegal_representativecompany_phonemailboxcompany_sizeindustryremarksaudit_statestatebalancecreate_time)
+        values (#{id}#{name}#{managerId}#{version}#{renewalDate}#{expirationDate}#{companyArea}#{companyAddress}#{businessLicenseId}#{legalRepresentative}#{companyPhone}#{mailbox}#{companySize}#{industry}#{remarks}#{auditState}#{state}#{balance}#{createTime})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="" useGeneratedKeys="true">
+        insert into
+        co_company(idnamemanager_idversionrenewal_dateexpiration_datecompany_areacompany_addressbusiness_license_idlegal_representativecompany_phonemailboxcompany_sizeindustryremarksaudit_statestatebalancecreate_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.id}#{entity.name}#{entity.managerId}#{entity.version}#{entity.renewalDate}#{entity.expirationDate}#{entity.companyArea}#{entity.companyAddress}#{entity.businessLicenseId}#{entity.legalRepresentative}#{entity.companyPhone}#{entity.mailbox}#{entity.companySize}#{entity.industry}#{entity.remarks}#{entity.auditState}#{entity.state}#{entity.balance}#{entity.createTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="" useGeneratedKeys="true">
+        insert into
+        co_company(idnamemanager_idversionrenewal_dateexpiration_datecompany_areacompany_addressbusiness_license_idlegal_representativecompany_phonemailboxcompany_sizeindustryremarksaudit_statestatebalancecreate_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.id}#{entity.name}#{entity.managerId}#{entity.version}#{entity.renewalDate}#{entity.expirationDate}#{entity.companyArea}#{entity.companyAddress}#{entity.businessLicenseId}#{entity.legalRepresentative}#{entity.companyPhone}#{entity.mailbox}#{entity.companySize}#{entity.industry}#{entity.remarks}#{entity.auditState}#{entity.state}#{entity.balance}#{entity.createTime})
+        </foreach>
+        on duplicate key update
+        id = values(id)name = values(name)manager_id = values(manager_id)version = values(version)renewal_date =
+        values(renewal_date)expiration_date = values(expiration_date)company_area = values(company_area)company_address
+        = values(company_address)business_license_id = values(business_license_id)legal_representative =
+        values(legal_representative)company_phone = values(company_phone)mailbox = values(mailbox)company_size =
+        values(company_size)industry = values(industry)remarks = values(remarks)audit_state = values(audit_state)state =
+        values(state)balance = values(balance)create_time = values(create_time)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update co_company
+        <set>
+            <if test="id != null and id != ''">
+                id = #{id},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="managerId != null and managerId != ''">
+                manager_id = #{managerId},
+            </if>
+            <if test="version != null and version != ''">
+                version = #{version},
+            </if>
+            <if test="renewalDate != null">
+                renewal_date = #{renewalDate},
+            </if>
+            <if test="expirationDate != null">
+                expiration_date = #{expirationDate},
+            </if>
+            <if test="companyArea != null and companyArea != ''">
+                company_area = #{companyArea},
+            </if>
+            <if test="companyAddress != null and companyAddress != ''">
+                company_address = #{companyAddress},
+            </if>
+            <if test="businessLicenseId != null and businessLicenseId != ''">
+                business_license_id = #{businessLicenseId},
+            </if>
+            <if test="legalRepresentative != null and legalRepresentative != ''">
+                legal_representative = #{legalRepresentative},
+            </if>
+            <if test="companyPhone != null and companyPhone != ''">
+                company_phone = #{companyPhone},
+            </if>
+            <if test="mailbox != null and mailbox != ''">
+                mailbox = #{mailbox},
+            </if>
+            <if test="companySize != null and companySize != ''">
+                company_size = #{companySize},
+            </if>
+            <if test="industry != null and industry != ''">
+                industry = #{industry},
+            </if>
+            <if test="remarks != null and remarks != ''">
+                remarks = #{remarks},
+            </if>
+            <if test="auditState != null and auditState != ''">
+                audit_state = #{auditState},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+            <if test="balance != null and balance != ''">
+                balance = #{balance},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+        </set>
+        where = #{}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from co_company
+        where = #{}
+    </delete>
+
+    <select id="getCompanyById" resultMap="BaseResultMap" >
+        select * from co_company where id = #{id}
+    </select>
+
+</mapper>
+
