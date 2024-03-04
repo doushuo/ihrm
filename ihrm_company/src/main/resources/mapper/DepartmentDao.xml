@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zj.company.dao.DepartmentDao">
+
+    <resultMap id="BaseResultMap" type="com.zj.company.entity.Department">
+        <!--@Table co_department-->
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="companyId" column="company_id" jdbcType="VARCHAR"/>
+        <result property="parentId" column="parent_id" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="code" column="code" jdbcType="VARCHAR"/>
+        <result property="category" column="category" jdbcType="VARCHAR"/>
+        <result property="managerId" column="manager_id" jdbcType="VARCHAR"/>
+        <result property="city" column="city" jdbcType="VARCHAR"/>
+        <result property="introduce" column="introduce" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="manager" column="manager" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select id,
+               company_id,
+               parent_id,
+               name,
+               code,
+               category,
+               manager_id,
+               city,
+
+               introduce,
+               create_time,
+               manager
+
+
+        from co_department
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+        id,
+        company_id,
+        parent_id,
+        name,
+        code,
+        category,
+        manager_id,
+        city,
+
+        introduce,
+        create_time,
+        manager
+
+
+        from co_department
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="companyId != null and companyId != ''">
+                and company_id = #{companyId}
+            </if>
+            <if test="parentId != null and parentId != ''">
+                and parent_id = #{parentId}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="code != null and code != ''">
+                and code = #{code}
+            </if>
+            <if test="category != null and category != ''">
+                and category = #{category}
+            </if>
+            <if test="managerId != null and managerId != ''">
+                and manager_id = #{managerId}
+            </if>
+            <if test="city != null and city != ''">
+                and city = #{city}
+            </if>
+            <if test="introduce != null and introduce != ''">
+                and introduce = #{introduce}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="manager != null and manager != ''">
+                and manager = #{manager}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+    select
+    id,
+    company_id,
+    parent_id,
+    name,
+    code,
+    category,
+    manager_id,
+    city,
+
+    introduce,
+    create_time,
+    manager
+
+
+    from ihrm.co_department
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from co_department
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="companyId != null and companyId != ''">
+                and company_id = #{companyId}
+            </if>
+            <if test="parentId != null and parentId != ''">
+                and parent_id = #{parentId}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="code != null and code != ''">
+                and code = #{code}
+            </if>
+            <if test="category != null and category != ''">
+                and category = #{category}
+            </if>
+            <if test="managerId != null and managerId != ''">
+                and manager_id = #{managerId}
+            </if>
+            <if test="city != null and city != ''">
+                and city = #{city}
+            </if>
+            <if test="introduce != null and introduce != ''">
+                and introduce = #{introduce}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="manager != null and manager != ''">
+                and manager = #{manager}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into co_department(company_idparent_idnamecodecategorymanager_idcityintroducecreate_timemanager)
+        values (#{companyId}#{parentId}#{name}#{code}#{category}#{managerId}#{city}#{introduce}#{createTime}#{manager})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into co_department(company_idparent_idnamecodecategorymanager_idcityintroducecreate_timemanager)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.companyId}#{entity.parentId}#{entity.name}#{entity.code}#{entity.category}#{entity.managerId}#{entity.city}#{entity.introduce}#{entity.createTime}#{entity.manager})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into co_department(company_idparent_idnamecodecategorymanager_idcityintroducecreate_timemanager)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.companyId}#{entity.parentId}#{entity.name}#{entity.code}#{entity.category}#{entity.managerId}#{entity.city}#{entity.introduce}#{entity.createTime}#{entity.manager})
+        </foreach>
+        on duplicate key update
+        company_id = values(company_id)parent_id = values(parent_id)name = values(name)code = values(code)category =
+        values(category)manager_id = values(manager_id)city = values(city)introduce = values(introduce)create_time =
+        values(create_time)manager = values(manager)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update co_department
+        <set>
+            <if test="companyId != null and companyId != ''">
+                company_id = #{companyId},
+            </if>
+            <if test="parentId != null and parentId != ''">
+                parent_id = #{parentId},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="code != null and code != ''">
+                code = #{code},
+            </if>
+            <if test="category != null and category != ''">
+                category = #{category},
+            </if>
+            <if test="managerId != null and managerId != ''">
+                manager_id = #{managerId},
+            </if>
+            <if test="city != null and city != ''">
+                city = #{city},
+            </if>
+            <if test="introduce != null and introduce != ''">
+                introduce = #{introduce},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="manager != null and manager != ''">
+                manager = #{manager},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from co_department
+        where id = #{id}
+    </delete>
+
+</mapper>
+
